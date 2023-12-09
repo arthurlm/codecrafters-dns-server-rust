@@ -1,18 +1,22 @@
 use std::{
-    io,
+    env, io,
     net::{SocketAddr, UdpSocket},
 };
 
-use dns_starter_rust::message::*;
+use dns_starter_rust::{client::DnsClient, message::*};
 
 fn main() -> io::Result<()> {
+    let resolver_addr = parse_cli_resolver().expect("Missing or bad '--resolver' argument");
+    println!("Using resolver: {resolver_addr:?}");
+
+    let mut dns_client = DnsClient::connect("0.0.0.0:2054", resolver_addr)?;
     let udp_socket = UdpSocket::bind("127.0.0.1:2053")?;
     let mut buf = [0; 512];
 
     loop {
         match udp_socket.recv_from(&mut buf) {
             Ok((size, source)) => {
-                let response = handle_query(&buf[..size]);
+                let response = handle_query(&buf[..size], &mut dns_client);
                 send_response(&udp_socket, &source, &response)?;
             }
             Err(e) => {
@@ -25,9 +29,15 @@ fn main() -> io::Result<()> {
     Ok(())
 }
 
-fn handle_query(input: &[u8]) -> Message {
+fn parse_cli_resolver() -> Option<SocketAddr> {
+    let index = env::args().position(|x| x == "--resolver")?;
+    let addr = env::args().nth(index + 1)?;
+    addr.parse().ok()
+}
+
+fn handle_query(input: &[u8], dns_client: &mut DnsClient) -> Message {
     let (_, query) = Message::parse(input).expect("Invalid DNS query");
-    println!("query: {query:#?}");
+    println!("query: {query:?}");
 
     Message {
         header: Header {
@@ -69,7 +79,10 @@ fn handle_query(input: &[u8]) -> Message {
                 rr_type: ResourceRecordType::A,
                 rr_class: ResourceRecordClass::IN,
                 ttl: 60,
-                data: vec![8, 8, 8, 8],
+                data: dns_client
+                    .query(question)
+                    .expect("Fail to query resolver")
+                    .data,
             })
             .collect(),
     }
