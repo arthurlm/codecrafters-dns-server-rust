@@ -6,6 +6,7 @@ fn test_query() {
     let answer = client
         .query(&QuestionSection::new_a("example.com"))
         .unwrap();
+
     assert_eq!(
         answer,
         AnswerSection {
@@ -14,6 +15,7 @@ fn test_query() {
             rr_type: ResourceRecordType::A,
             rr_class: ResourceRecordClass::IN,
             ttl: answer.ttl,
+            // Yeah I know .. This IP may change and tests break, but that a good to start the client :)
             data: vec![93, 184, 216, 34],
         }
     );

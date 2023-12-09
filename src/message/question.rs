@@ -15,7 +15,7 @@ pub struct QuestionSection {
 impl QuestionSection {
     pub fn new_a(url: &str) -> Self {
         Self {
-            labels: url.split(".").map(|x| x.to_string()).collect(),
+            labels: url.split('.').map(|x| x.to_string()).collect(),
             label_offset: None,
             rr_type: ResourceRecordType::A,
             rr_class: ResourceRecordClass::IN,
