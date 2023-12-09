@@ -27,9 +27,15 @@ impl Message {
         let (input, header) = Header::parse(msg_input)?;
         let (input, mut questions) =
             count(QuestionSection::parse, header.question_count as usize)(input)?;
+        let (input, mut answers) =
+            count(AnswerSection::parse, header.answer_count as usize)(input)?;
 
         for question in &mut questions {
             question.resolve_offsets(msg_input)?;
+        }
+
+        for answer in &mut answers {
+            answer.resolve_offsets(msg_input)?;
         }
 
         Ok((
@@ -37,7 +43,7 @@ impl Message {
             Self {
                 header,
                 questions,
-                answers: vec![],
+                answers,
             },
         ))
     }
