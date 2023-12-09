@@ -41,12 +41,19 @@ fn handle_query(input: &[u8]) -> Message {
                 is_recursion_available: false,
                 response_code: ResponseCode::default(),
             },
-            question_count: 1,
-            answer_count: 0,
+            question_count: query.questions.len() as u16,
+            answer_count: 1,
             authority_resource_record_count: 0,
             additional_resource_record_count: 0,
         },
         questions: query.questions,
+        answers: vec![AnswerSection {
+            labels: vec!["codecrafters".to_string(), "io".to_string()],
+            rr_type: ResourceRecordType::A,
+            rr_class: ResourceRecordClass::IN,
+            ttl: 60,
+            data: vec![8, 8, 8, 8],
+        }],
     }
 }
 
