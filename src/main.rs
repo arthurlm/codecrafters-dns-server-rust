@@ -34,12 +34,16 @@ fn handle_query(input: &[u8]) -> Message {
             id: query.header.id,
             flags: HeaderFlags {
                 qr: QrFlag::Reply,
-                opcode: OpCode::Query,
+                opcode: query.header.flags.opcode,
                 is_authoritative_answer: false,
                 is_truncation: false,
-                is_recursion_desired: false,
+                is_recursion_desired: query.header.flags.is_recursion_desired,
                 is_recursion_available: false,
-                response_code: ResponseCode::default(),
+                response_code: if query.header.flags.opcode == OpCode::Query {
+                    ResponseCode::NoError
+                } else {
+                    ResponseCode::NotImplemented
+                },
             },
             question_count: query.questions.len() as u16,
             answer_count: 1,

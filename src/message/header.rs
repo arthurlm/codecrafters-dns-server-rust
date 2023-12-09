@@ -159,6 +159,7 @@ pub enum ResponseCode {
     FormatError = 1,
     ServerFail = 2,
     NonExistentDomain = 3,
+    NotImplemented = 4,
     Invalid = 0x0F, // Encoded on 4 bytes
 }
 
@@ -169,6 +170,7 @@ impl From<u8> for ResponseCode {
             1 => Self::FormatError,
             2 => Self::ServerFail,
             3 => Self::NonExistentDomain,
+            4 => Self::NotImplemented,
             _ => Self::Invalid,
         }
     }
