@@ -24,20 +24,29 @@ pub struct Message {
 
 impl Message {
     pub fn parse(msg_input: &[u8]) -> IResult<&[u8], Self> {
+        // Parse msg
         let (input, header) = Header::parse(msg_input)?;
-        let (input, mut questions) =
+        let (input, questions_unresolved) =
             count(QuestionSection::parse, header.question_count as usize)(input)?;
-        let (input, mut answers) =
+        let (input, answers_unresolved) =
             count(AnswerSection::parse, header.answer_count as usize)(input)?;
 
-        for question in &mut questions {
-            question.resolve_offsets(msg_input)?;
+        // Resolve compressed row
+        let mut questions = Vec::with_capacity(questions_unresolved.len());
+        for (mut question, offset) in questions_unresolved {
+            let (_, next_labels) = labels::resolve_offsets(msg_input, offset)?;
+            question.labels.extend(next_labels);
+            questions.push(question);
         }
 
-        for answer in &mut answers {
-            answer.resolve_offsets(msg_input)?;
+        let mut answers = Vec::with_capacity(answers_unresolved.len());
+        for (mut answer, offset) in answers_unresolved {
+            let (_, next_labels) = labels::resolve_offsets(msg_input, offset)?;
+            answer.labels.extend(next_labels);
+            answers.push(answer);
         }
 
+        // Build response
         Ok((
             input,
             Self {

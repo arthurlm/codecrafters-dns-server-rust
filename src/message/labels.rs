@@ -57,3 +57,18 @@ fn parse_compressed(input: &[u8]) -> IResult<&[u8], ParseLabelOutput> {
 fn data_to_string(input: &[u8]) -> String {
     String::from_utf8_lossy(input).to_string()
 }
+
+pub fn resolve_offsets(input: &[u8], offset: Option<u16>) -> IResult<&[u8], Vec<String>> {
+    match offset {
+        None => Ok((input, vec![])),
+        Some(idx) => {
+            let (input, (next_labels, next_offset)) = parse(&input[idx as usize..])?;
+            assert!(
+                next_offset.is_none(),
+                "Chaining offset in compressed message is not supported"
+            );
+
+            Ok((input, next_labels))
+        }
+    }
+}

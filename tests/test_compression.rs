@@ -38,7 +38,6 @@ fn test_parse() {
                         "longassdomainname".to_string(),
                         "com".to_string()
                     ],
-                    label_offset: None,
                     rr_type: ResourceRecordType::A,
                     rr_class: ResourceRecordClass::IN
                 },
@@ -48,7 +47,6 @@ fn test_parse() {
                         "longassdomainname".to_string(),
                         "com".to_string()
                     ],
-                    label_offset: None,
                     rr_type: ResourceRecordType::A,
                     rr_class: ResourceRecordClass::IN
                 }

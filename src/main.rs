@@ -65,7 +65,6 @@ fn handle_query(input: &[u8], dns_client: &mut DnsClient) -> Message {
             .iter()
             .map(|question| QuestionSection {
                 labels: question.labels.clone(),
-                label_offset: None,
                 rr_type: ResourceRecordType::A,
                 rr_class: ResourceRecordClass::IN,
             })
@@ -75,7 +74,6 @@ fn handle_query(input: &[u8], dns_client: &mut DnsClient) -> Message {
             .iter()
             .map(|question| AnswerSection {
                 labels: question.labels.clone(),
-                label_offset: None,
                 rr_type: ResourceRecordType::A,
                 rr_class: ResourceRecordClass::IN,
                 ttl: 60,

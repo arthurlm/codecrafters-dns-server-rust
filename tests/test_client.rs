@@ -11,7 +11,6 @@ fn test_query() {
         answer,
         AnswerSection {
             labels: vec!["example".to_string(), "com".to_string()],
-            label_offset: None,
             rr_type: ResourceRecordType::A,
             rr_class: ResourceRecordClass::IN,
             ttl: answer.ttl,

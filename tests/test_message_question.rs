@@ -5,12 +5,11 @@ fn test_parse_empty() {
     let input = b"\x00\x00\x01\x00\x01";
 
     // Test parse
-    let (_, q) = QuestionSection::parse(input).unwrap();
+    let (_, (q, _)) = QuestionSection::parse(input).unwrap();
     assert_eq!(
         q,
         QuestionSection {
             labels: vec![],
-            label_offset: None,
             rr_type: ResourceRecordType::A,
             rr_class: ResourceRecordClass::IN,
         }
@@ -27,12 +26,11 @@ fn test_parse_full() {
     let input = b"\x06google\x03com\x00\x00\x09\x00\x02";
 
     // Test parse
-    let (_, q) = QuestionSection::parse(input).unwrap();
+    let (_, (q, _)) = QuestionSection::parse(input).unwrap();
     assert_eq!(
         q,
         QuestionSection {
             labels: vec!["google".to_string(), "com".to_string()],
-            label_offset: None,
             rr_type: ResourceRecordType::MR,
             rr_class: ResourceRecordClass::CS,
         }
@@ -51,7 +49,6 @@ fn test_new() {
         q,
         QuestionSection {
             labels: vec!["hello".to_string(), "world".to_string(), "com".to_string(),],
-            label_offset: None,
             rr_type: ResourceRecordType::A,
             rr_class: ResourceRecordClass::IN,
         }

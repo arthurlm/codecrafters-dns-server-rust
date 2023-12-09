@@ -7,51 +7,39 @@ use super::{labels, ResourceRecordClass, ResourceRecordType};
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct QuestionSection {
     pub labels: Vec<String>,
-    pub label_offset: Option<u16>,
     pub rr_type: ResourceRecordType,
     pub rr_class: ResourceRecordClass,
 }
+
+/// Parsed question: data + offset of compressed data (if compression is enabled)
+pub type ParsedQuestion = (QuestionSection, Option<u16>);
 
 impl QuestionSection {
     pub fn new_a(url: &str) -> Self {
         Self {
             labels: url.split('.').map(|x| x.to_string()).collect(),
-            label_offset: None,
             rr_type: ResourceRecordType::A,
             rr_class: ResourceRecordClass::IN,
         }
     }
 
-    pub fn parse(input: &[u8]) -> IResult<&[u8], Self> {
+    pub fn parse(input: &[u8]) -> IResult<&[u8], ParsedQuestion> {
         let (input, (labels, label_offset)) = labels::parse(input)?;
         let (input, rr_type_val) = be_u16(input)?;
         let (input, rr_class_val) = be_u16(input)?;
 
         Ok((
             input,
-            Self {
-                labels,
+            (
+                Self {
+                    labels,
+
+                    rr_type: rr_type_val.into(),
+                    rr_class: rr_class_val.into(),
+                },
                 label_offset,
-                rr_type: rr_type_val.into(),
-                rr_class: rr_class_val.into(),
-            },
+            ),
         ))
-    }
-
-    pub fn resolve_offsets<'a>(&mut self, input: &'a [u8]) -> IResult<&'a [u8], ()> {
-        if let Some(offset) = self.label_offset {
-            let (_remaining, (next_labels, next_offset)) =
-                labels::parse(&input[offset as usize..])?;
-            assert!(
-                next_offset.is_none(),
-                "Chaining offset in compressed message is not supported"
-            );
-
-            self.labels.extend(next_labels);
-            self.label_offset = None;
-        }
-
-        Ok((input, ()))
     }
 
     pub fn encode<W: Write>(&self, buf: &mut W) -> io::Result<()> {
