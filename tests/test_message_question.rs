@@ -43,3 +43,17 @@ fn test_parse_full() {
     q.encode(&mut buf).unwrap();
     assert_eq!(buf, input);
 }
+
+#[test]
+fn test_new() {
+    let q = QuestionSection::new_a("hello.world.com");
+    assert_eq!(
+        q,
+        QuestionSection {
+            labels: vec!["hello".to_string(), "world".to_string(), "com".to_string(),],
+            label_offset: None,
+            rr_type: ResourceRecordType::A,
+            rr_class: ResourceRecordClass::IN,
+        }
+    );
+}

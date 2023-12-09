@@ -23,6 +23,15 @@ pub struct QuestionSection {
 }
 
 impl QuestionSection {
+    pub fn new_a(url: &str) -> Self {
+        Self {
+            labels: url.split(".").map(|x| x.to_string()).collect(),
+            label_offset: None,
+            rr_type: ResourceRecordType::A,
+            rr_class: ResourceRecordClass::IN,
+        }
+    }
+
     pub fn parse(input: &[u8]) -> IResult<&[u8], Self> {
         let (input, (labels, label_offset)) = parse_label(input)?;
         let (input, rr_type_val) = be_u16(input)?;
