@@ -4,6 +4,7 @@ use nom::{multi::count, IResult};
 
 mod answer;
 mod header;
+mod labels;
 mod question;
 mod resource_record_class;
 mod resource_record_type;
