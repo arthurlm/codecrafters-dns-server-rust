@@ -40,7 +40,7 @@ impl Header {
         ))
     }
 
-    pub fn encode<W: Write>(&self, mut buf: W) -> io::Result<()> {
+    pub fn encode<W: Write>(&self, buf: &mut W) -> io::Result<()> {
         let mut flags = 0;
         flags |= (self.flags.qr as u16) << 15;
         flags |= (self.flags.opcode as u16) << 11;
