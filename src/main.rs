@@ -50,14 +50,26 @@ fn handle_query(input: &[u8]) -> Message {
             authority_resource_record_count: 0,
             additional_resource_record_count: 0,
         },
-        questions: query.questions,
-        answers: vec![AnswerSection {
-            labels: vec!["codecrafters".to_string(), "io".to_string()],
-            rr_type: ResourceRecordType::A,
-            rr_class: ResourceRecordClass::IN,
-            ttl: 60,
-            data: vec![8, 8, 8, 8],
-        }],
+        questions: query
+            .questions
+            .iter()
+            .map(|question| QuestionSection {
+                labels: question.labels.clone(),
+                rr_type: ResourceRecordType::A,
+                rr_class: ResourceRecordClass::IN,
+            })
+            .collect(),
+        answers: query
+            .questions
+            .iter()
+            .map(|question| AnswerSection {
+                labels: question.labels.clone(),
+                rr_type: ResourceRecordType::A,
+                rr_class: ResourceRecordClass::IN,
+                ttl: 60,
+                data: vec![8, 8, 8, 8],
+            })
+            .collect(),
     }
 }
 
