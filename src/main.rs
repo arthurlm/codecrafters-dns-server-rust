@@ -55,6 +55,7 @@ fn handle_query(input: &[u8]) -> Message {
             .iter()
             .map(|question| QuestionSection {
                 labels: question.labels.clone(),
+                label_offset: None,
                 rr_type: ResourceRecordType::A,
                 rr_class: ResourceRecordClass::IN,
             })

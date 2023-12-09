@@ -10,6 +10,7 @@ fn test_parse_empty() {
         q,
         QuestionSection {
             labels: vec![],
+            label_offset: None,
             rr_type: ResourceRecordType::A,
             rr_class: ResourceRecordClass::IN,
         }
@@ -31,6 +32,7 @@ fn test_parse_full() {
         q,
         QuestionSection {
             labels: vec!["google".to_string(), "com".to_string()],
+            label_offset: None,
             rr_type: ResourceRecordType::MR,
             rr_class: ResourceRecordClass::CS,
         }

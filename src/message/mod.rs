@@ -22,10 +22,14 @@ pub struct Message {
 }
 
 impl Message {
-    pub fn parse(input: &[u8]) -> IResult<&[u8], Self> {
-        let (input, header) = Header::parse(input)?;
-        let (input, questions) =
+    pub fn parse(msg_input: &[u8]) -> IResult<&[u8], Self> {
+        let (input, header) = Header::parse(msg_input)?;
+        let (input, mut questions) =
             count(QuestionSection::parse, header.question_count as usize)(input)?;
+
+        for question in &mut questions {
+            question.resolve_offsets(msg_input)?;
+        }
 
         Ok((
             input,
