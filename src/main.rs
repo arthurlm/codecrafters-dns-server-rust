@@ -26,7 +26,7 @@ fn main() -> io::Result<()> {
 }
 
 fn handle_query(input: &[u8]) -> Message {
-    let (_, query) = Message::parse(&input).expect("Invalid DNS query");
+    let (_, query) = Message::parse(input).expect("Invalid DNS query");
     println!("query: {query:#?}");
 
     Message {
