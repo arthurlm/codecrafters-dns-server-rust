@@ -46,7 +46,7 @@ fn handle_query(input: &[u8]) -> Message {
                 },
             },
             question_count: query.questions.len() as u16,
-            answer_count: 1,
+            answer_count: query.questions.len() as u16,
             authority_resource_record_count: 0,
             additional_resource_record_count: 0,
         },
