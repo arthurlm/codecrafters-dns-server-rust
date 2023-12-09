@@ -50,12 +50,12 @@ impl Header {
         flags |= (self.flags.is_recursion_available as u16) << 7;
         flags |= self.flags.response_code as u16;
 
-        buf.write(&self.id.to_be_bytes())?;
-        buf.write(&flags.to_be_bytes())?;
-        buf.write(&self.question_count.to_be_bytes())?;
-        buf.write(&self.answer_count.to_be_bytes())?;
-        buf.write(&self.authority_resource_record_count.to_be_bytes())?;
-        buf.write(&self.additional_resource_record_count.to_be_bytes())?;
+        buf.write_all(&self.id.to_be_bytes())?;
+        buf.write_all(&flags.to_be_bytes())?;
+        buf.write_all(&self.question_count.to_be_bytes())?;
+        buf.write_all(&self.answer_count.to_be_bytes())?;
+        buf.write_all(&self.authority_resource_record_count.to_be_bytes())?;
+        buf.write_all(&self.additional_resource_record_count.to_be_bytes())?;
 
         Ok(())
     }

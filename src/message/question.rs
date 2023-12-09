@@ -39,16 +39,16 @@ impl QuestionSection {
         for label in &self.labels {
             // Write string len
             assert!(label.len() <= 0xFF, "Label '{}' is too long", label);
-            buf.write(&[label.len() as u8])?;
+            buf.write_all(&[label.len() as u8])?;
 
             // Write string
-            buf.write(label.as_bytes())?;
+            buf.write_all(label.as_bytes())?;
         }
-        buf.write(&[0x00])?;
+        buf.write_all(&[0x00])?;
 
         // Write flags
-        buf.write(&(self.rr_type as u16).to_be_bytes())?;
-        buf.write(&(self.rr_class as u16).to_be_bytes())?;
+        buf.write_all(&(self.rr_type as u16).to_be_bytes())?;
+        buf.write_all(&(self.rr_class as u16).to_be_bytes())?;
 
         Ok(())
     }
