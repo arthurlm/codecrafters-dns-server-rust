@@ -136,6 +136,18 @@ pub enum OpCode {
     Query = 0,
     InverseQuery = 1,
     Status = 2,
+    Reserved3,
+    Reserved4,
+    Reserved5,
+    Reserved6,
+    Reserved7,
+    Reserved8,
+    Reserved9,
+    ReservedA,
+    ReservedB,
+    ReservedC,
+    ReservedD,
+    ReservedE,
     #[default]
     Invalid = 0x0F, // Encoded on 4 bytes
 }
@@ -146,6 +158,18 @@ impl From<u8> for OpCode {
             0 => Self::Query,
             1 => Self::InverseQuery,
             2 => Self::Status,
+            3 => Self::Reserved3,
+            4 => Self::Reserved4,
+            5 => Self::Reserved5,
+            6 => Self::Reserved6,
+            7 => Self::Reserved7,
+            8 => Self::Reserved8,
+            9 => Self::Reserved9,
+            10 => Self::ReservedA,
+            11 => Self::ReservedB,
+            12 => Self::ReservedC,
+            13 => Self::ReservedD,
+            14 => Self::ReservedE,
             _ => Self::Invalid,
         }
     }

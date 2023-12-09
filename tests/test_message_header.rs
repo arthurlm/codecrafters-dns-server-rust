@@ -97,7 +97,7 @@ fn test_parse_header_flags_opcode() {
         h,
         HeaderFlags {
             qr: QrFlag::Query,
-            opcode: OpCode::Invalid,
+            opcode: OpCode::Reserved8,
             is_authoritative_answer: false,
             is_truncation: false,
             is_recursion_desired: false,
