@@ -7,7 +7,7 @@ use nom::{
     IResult,
 };
 
-use super::{resource_record_class::ResourceRecordClass, resource_record_type::ResourceRecordType};
+use super::{ResourceRecordClass, ResourceRecordType};
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct QuestionSection {
@@ -42,7 +42,7 @@ impl QuestionSection {
             buf.write(&[label.len() as u8])?;
 
             // Write string
-            buf.write(label.as_ref())?;
+            buf.write(label.as_bytes())?;
         }
         buf.write(&[0x00])?;
 

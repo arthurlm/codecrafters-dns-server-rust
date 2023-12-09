@@ -1,7 +1,4 @@
-use dns_starter_rust::message::{
-    question::QuestionSection, resource_record_class::ResourceRecordClass,
-    resource_record_type::ResourceRecordType,
-};
+use dns_starter_rust::message::*;
 
 #[test]
 fn test_parse_empty() {

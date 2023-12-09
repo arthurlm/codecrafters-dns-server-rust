@@ -1,4 +1,4 @@
-use dns_starter_rust::message::header::*;
+use dns_starter_rust::message::*;
 
 #[test]
 fn test_parse_header() {

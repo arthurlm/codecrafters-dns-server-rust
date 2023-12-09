@@ -3,7 +3,7 @@ use std::{
     net::{SocketAddr, UdpSocket},
 };
 
-use dns_starter_rust::message::{header::*, Message};
+use dns_starter_rust::message::*;
 
 fn main() -> io::Result<()> {
     let udp_socket = UdpSocket::bind("127.0.0.1:2053")?;

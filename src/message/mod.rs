@@ -2,12 +2,15 @@ use std::io::{self, Write};
 
 use nom::{multi::count, IResult};
 
-use self::{header::Header, question::QuestionSection};
+mod header;
+mod question;
+mod resource_record_class;
+mod resource_record_type;
 
-pub mod header;
-pub mod question;
-pub mod resource_record_class;
-pub mod resource_record_type;
+pub use header::*;
+pub use question::QuestionSection;
+pub use resource_record_class::ResourceRecordClass;
+pub use resource_record_type::ResourceRecordType;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Message {
